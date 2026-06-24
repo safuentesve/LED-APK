@@ -13,14 +13,16 @@ jobs:
       - name: Install buildozer and system dependencies
         run: |
           pip install --upgrade pip setuptools virtualenv
-          pip install "cython<3.0.0" "buildozer==1.5.0"
+          pip install "cython<3.0.0" buildozer
           sudo apt update
           sudo apt install -y openjdk-17-jdk build-essential libssl-dev libffi-dev \
             zlib1g-dev autoconf automake libtool ccache clang lld
-            
-      - name: Clear Buildozer Cache
+
+      - name: Auto-accept Android Licenses
         run: |
-          buildozer android clean
+          mkdir -p ~/.android
+          touch ~/.android/repositories.cfg
+          yes | (yes || true) | buildozer android p4a -- get-licenses || true
           
       - name: Build APK
         run: |
