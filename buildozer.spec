@@ -8,12 +8,14 @@ source.include_exts = py,png,jpg,kv,atlas,ttf
 
 version = 1.0
 
-requirements = python3, kivy, kivymd, android, pyjnius, setuptools
+# Cambiado a las versiones estables óptimas para evitar la compilación larga de recetas nativas viejas
+requirements = python3, kivy==2.2.1, kivymd==1.1.1, android, pyjnius, setuptools
 
 orientation = portrait
 
 android.permissions = BLUETOOTH, BLUETOOTH_ADMIN, BLUETOOTH_SCAN, BLUETOOTH_CONNECT, ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION
 
+# Ajustes de empaquetado para compatibilidad con las librerías de Bluetooth
 android.api = 33
 android.minapi = 23
 android.ndk = 25b
