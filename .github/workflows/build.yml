@@ -8,11 +8,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-      - name: Install buildozer
+      - name: Install buildozer and dependencies
         run: |
-          pip install buildozer cython
+          pip install --upgrade pip setuptools virtualenv
+          pip install "cython<3.0.0" buildozer
           sudo apt install -y openjdk-17-jdk \
-            build-essential libssl-dev libffi-dev zlib1g-dev
+            build-essential libssl-dev libffi-dev zlib1g-dev autoconf automake libtool
       - name: Build APK
         run: buildozer android debug
       - uses: actions/upload-artifact@v4
