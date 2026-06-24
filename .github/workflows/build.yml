@@ -14,6 +14,11 @@ jobs:
           pip install "cython<3.0.0" buildozer
           sudo apt install -y openjdk-17-jdk \
             build-essential libssl-dev libffi-dev zlib1g-dev autoconf automake libtool
+      - name: Accept Android SDK Licenses Manually
+        run: |
+          mkdir -p ~/.android
+          touch ~/.android/repositories.cfg
+          yes | (yes || true) | buildozer android p4a -- get-licenses || true
       - name: Build APK
         run: buildozer android debug
       - uses: actions/upload-artifact@v4
