@@ -8,7 +8,7 @@ source.include_exts = py,png,jpg,kv,atlas,ttf
 
 version = 1.0
 
-requirements = python3==3.11,kivy==2.3.0,kivymd==1.1.1,android,pyjnius
+requirements = python3,kivy==2.3.0,kivymd==1.1.1,android,pyjnius
 
 orientation = portrait
 
