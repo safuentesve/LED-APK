@@ -20,6 +20,8 @@ android.accept_sdk_license = True
 android.archs = arm64-v8a
 android.allow_backup = False
 
+p4a.hook =
+
 [buildozer]
 log_level = 2
 warn_on_root = 1
