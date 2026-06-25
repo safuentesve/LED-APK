@@ -14,25 +14,34 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Build Docker image
+        run: docker build -t led-buildozer .
+
       - name: Cache buildozer
         uses: actions/cache@v4
         with:
           path: .buildozer_cache
-          key: bz-${{ hashFiles('buildozer.spec') }}-v5
-          restore-keys: bz-v5-
+          key: bz-docker-${{ hashFiles('buildozer.spec') }}-v6
+          restore-keys: bz-docker-v6-
 
-      - name: Build with buildozer-action (Docker interno)
-        uses: ArtemSBulgakov/buildozer-action@v1
-        id: buildozer
-        with:
-          command: android debug
-          workdir: .
-          buildozer_version: stable
+      - name: Build APK inside Docker
+        run: |
+          mkdir -p .buildozer_cache bin
+          docker run --rm \
+            -v "$(pwd):/app" \
+            -v "$(pwd)/.buildozer_cache:/root/.buildozer" \
+            -e JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 \
+            led-buildozer \
+            bash -c "cd /app && buildozer android debug 2>&1"
+
+      - name: List APK
+        if: always()
+        run: ls -lh bin/ 2>/dev/null || echo "Sin APK"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: LED-Panel-APK
-          path: ${{ steps.buildozer.outputs.filename }}
+          path: bin/*.apk
           if-no-files-found: warn
           retention-days: 30
